@@ -1,2 +1,2 @@
-# masters-degree-in-computer-science-from-unesp
+# About
 Master's Degree in Computer Science from UNESP
