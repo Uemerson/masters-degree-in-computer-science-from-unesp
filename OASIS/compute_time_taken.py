@@ -26,5 +26,6 @@ minutes = int((total_seconds % 3600) // 60)
 remaining_seconds = total_seconds % 60
 
 # Print the result
+print(f"total seconds: {total_seconds}")
 print(
     f'Total time: {days} days, {hours} hours, {minutes} minutes, and {remaining_seconds:.6f} seconds.')

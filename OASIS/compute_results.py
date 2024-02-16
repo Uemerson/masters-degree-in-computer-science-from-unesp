@@ -64,7 +64,7 @@ def main():
             # 3
             # if index_data == 15:
             if index_data == 0:
-                grid_index = 2
+                grid_index = 1
                 # x, y, x_seg, y_seg = utils.pkload(data)
 
                 # x, y = x[None, None, ...], y[None, None, ...]
@@ -84,6 +84,7 @@ def main():
                 grid = grid[None, None, ...]
 
                 results = []
+                results2 = []
                 for index, model in enumerate(models):
                     print(f'Results of: {names[index]}')
                     print(models_dir[index])
@@ -150,8 +151,13 @@ def main():
                     # grid_fig.savefig(
                     #     f'results-{names[index]}.png', bbox_inches='tight')
 
+                    # results.append([slices_moving[grid_index], slices_fixed[grid_index],
+                    #                 slices_pred[grid_index], slices_flow[grid_index], flow_rgb, slices_grid[grid_index]])
                     results.append([slices_moving[grid_index], slices_fixed[grid_index],
-                                    slices_pred[grid_index], slices_flow[grid_index], flow_rgb, slices_grid[grid_index]])
+                                    slices_pred[grid_index], flow_rgb, slices_grid[grid_index]])
+                    results2.append(
+                        [slices_moving[grid_index], slices_fixed[grid_index], slices_pred[grid_index]])
+
                     del x_def, flow, def_grid
                     # flow_rgb = flow_as_rgb(slices_flow[2])
                     # flow_rgb = flow_as_rgb(flow)
@@ -169,6 +175,11 @@ def main():
                 name_results = f"oasis_results_slice_{index_data}_{name_axis}.png"
                 mult_results = comput_mult_figs(results)
                 mult_results.savefig(name_results, bbox_inches='tight')
+
+                name_results = f"oasis_results2_slice_{index_data}_{name_axis}.png"
+                mult_results = comput_mult_figs2(results2, grid_index)
+                mult_results.savefig(name_results, bbox_inches='tight')
+
                 can_break = True
 
             if can_break:
@@ -185,6 +196,14 @@ def comput_mult_fig(imgs):
 
 
 def comput_mult_figs(imgs):
+    names = [
+        "Max Pooling",
+        "BPCA",
+        "Convolução com\nsubamostragem",
+        "BPCA inverso",
+        "Max Pooling(3) +\nBPCA(1)",
+        "BPCA(3) +\nMax Pooling(1)",
+    ]
     plt.rcParams['text.usetex'] = True
 
     fig, axs = plt.subplots(6, 6, figsize=(12, 12))
@@ -192,19 +211,72 @@ def comput_mult_figs(imgs):
     for i in range(6):
         for j in range(6):
             if i == 0:
-                if j == 0:
+                if j == 1:
                     axs[i, j].set_title('$m$', fontsize=20, pad=7)
-                elif j == 1:
-                    axs[i, j].set_title('$f$', fontsize=20, pad=7)
                 elif j == 2:
+                    axs[i, j].set_title('$f$', fontsize=20, pad=7)
+                elif j == 3:
                     axs[i, j].set_title(
                         r'$m \ {\scriptstyle \circ} \ \phi $', fontsize=20, pad=7, ha='center', va='center')
-                else:
+                elif j > 3:
                     axs[i, j].set_title('$\phi$', fontsize=20, pad=7)
 
-            # axs[i, j].imshow(imgs[i][j], cmap='gray', aspect="auto")
-            axs[i, j].imshow(imgs[i][j], cmap='gray')
-            axs[i, j].axis('off')
+            if j == 0:
+                axs[i, j].text(0.5, 0.5, names[i],
+                               fontsize=15, ha='center', va='center')
+                axs[i, j].axis('off')
+            else:
+                # axs[i, j].imshow(imgs[i][j], cmap='gray', aspect="auto")
+                axs[i, j].imshow(imgs[i][j-1], cmap='gray')
+                axs[i, j].axis('off')
+
+    fig.subplots_adjust(wspace=0.1, hspace=0.1)
+    return fig
+
+
+def comput_mult_figs2(imgs, grid_index):
+    names = [
+        "Max Pooling",
+        "BPCA",
+        "Convolução com\nsubamostragem",
+        "BPCA inverso",
+        "Max Pooling(3) +\nBPCA(1)",
+        "BPCA(3) +\nMax Pooling(1)",
+    ]
+    plt.rcParams['text.usetex'] = True
+
+    fig, axs = plt.subplots(6, 4)
+    # plt.rcParams['mathtext.fontset'] = 'cm'
+    for i in range(6):
+        for j in range(4):
+            if i == 0:
+                if j == 1:
+                    axs[i, j].set_title('$m$', fontsize=20, pad=7)
+                elif j == 2:
+                    axs[i, j].set_title('$f$', fontsize=20, pad=7)
+                elif j == 3:
+                    axs[i, j].set_title(
+                        r'$m \ {\scriptstyle \circ} \ \phi $', fontsize=20, pad=7, ha='center', va='center')
+
+            if j == 0:
+                axs[i, j].text(0.5, 0.5, names[i],
+                               fontsize=20, ha='center', va='center')
+                axs[i, j].axis('off')
+            else:
+                axs[i, j].imshow(imgs[i][j-1], cmap='gray', aspect="auto")
+                # axs[i, j].imshow(imgs[i][j-1], cmap='gray')
+
+                if grid_index == 0:
+                    axs[i, j].get_figure().set_figheight(12)
+                    axs[i, j].get_figure().set_figwidth(14)
+                elif grid_index == 1:
+                    axs[i, j].get_figure().set_figheight(22)
+                    axs[i, j].get_figure().set_figwidth(10)
+                elif grid_index == 2:
+                    axs[i, j].get_figure().set_figheight(24)
+                    axs[i, j].get_figure().set_figwidth(14)
+
+                axs[i, j].axis('off')
 
     fig.subplots_adjust(wspace=0.1, hspace=0.1)
     return fig
