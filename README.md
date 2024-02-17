@@ -35,3 +35,7 @@ After installing dependencies and activating environments using `conda`, you can
 ```
 $ tensorboard --logdir path-to-log/logs --port 6006
 ```
+
+# Observation
+
+In some scripts, you will need to change the foler path, for example, `/home/hinton/uemerson/` to your directory path.
