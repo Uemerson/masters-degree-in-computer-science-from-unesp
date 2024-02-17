@@ -2,6 +2,13 @@
 
 This repository stores the training scripts, submission, and other files used in the research entitled `"Registro Não-Rígido de Imagens Médicas usando Block-Based Principal Component Analysis como Camada de Pooling"` conducted as part of the master's degree program at São Paulo State University (UNESP).
 
+# Datasets
+
+You can download the datasets used in this work from:
+
+- [👉 Download IXI](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration/blob/main/IXI/TransMorph_on_IXI.md)
+- [👉 Download OASIS](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration/blob/main/OASIS/TransMorph_on_OASIS.md)
+
 # How to train ?
 
 The train scripts are inside OASIS and IXI folder, start with train_*
