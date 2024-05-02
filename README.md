@@ -1,3 +1,7 @@
+# Paper(s)
+
+[Registro Não-Rígido de Imagens Médicas usando Block-Based Principal Component Analysis como Camada de Pooling](https://hdl.handle.net/11449/255307)
+
 # About
 
 This repository stores the training scripts, submission, and other files used in the research entitled `"Registro Não-Rígido de Imagens Médicas usando Block-Based Principal Component Analysis como Camada de Pooling"` conducted as part of the master's degree program at São Paulo State University (UNESP).
